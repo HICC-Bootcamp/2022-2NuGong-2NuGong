@@ -89,10 +89,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': credentials["DB_NAME"],
-        'USER' : credentials["DB_HOST"],
+        'USER' : credentials["DB_USER"],
         'PASSWORD' : credentials["DB_PASSWORD"],
         'HOST' : credentials["DB_HOST"],
-        'PORT' : credentials["DB_PORT"]
+        'PORT' : credentials["DB_PORT"],
     }
 }
 
