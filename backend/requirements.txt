@@ -9,3 +9,4 @@ pycparser==2.21
 pytz==2022.1
 sqlparse==0.4.2
 tzdata==2022.1
+python==3.9.1
