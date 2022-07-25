@@ -16,7 +16,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             nickname = nickname,
             department = department,
-            favorites = favorites,
+            favorites = favorites
         )
 
         user.set_password(password)
@@ -24,12 +24,12 @@ class UserManager(BaseUserManager):
         return user
     
     # 관리자 유저 생성
-    def create_admin_user(self, nickname, department, favorites, password=None):
+    def create_superuser(self, nickname, department, favorites, password=None):
         user = self.create_user(
             nickname = nickname,
-            password = password,
             department = department,
-            favorites = favorites
+            favorites = favorites,
+            password = password
         )
 
         user.is_admin = True
@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     id = models.AutoField(primary_key=True)
     nickname = models.CharField(max_length=10)
-    department = models.IntegerField()
+    department = models.IntegerField(blank=True)
     favorites = ArrayField(models.IntegerField(), blank=True)
 
     # User 모델의 필수 field
@@ -53,7 +53,7 @@ class User(AbstractBaseUser):
     # username field는 nickname으로 설정
     USERNAME_FIELD = 'nickname'
     # 필수 작성 field
-    REQUIRED_FIELDS = ['department', 'favorites']
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.name
