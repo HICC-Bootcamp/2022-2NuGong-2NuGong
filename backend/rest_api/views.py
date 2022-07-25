@@ -16,7 +16,7 @@ def login(request):
     return Response({
         'user_info': {
             'id': user.id,
-            'username': user.username
+            'nickname': user.nickname
         },
         "token": token
     })
@@ -27,14 +27,16 @@ def createAccount(request):
     serializer = RegisterSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
-
+    print(1111)
+    print(user)
+    print("not done")
     _, token = AuthToken.objects.create(user)
 
-
+    print("done")
     return Response({
         'user_info': {
             'id': user.id,
-            'username': user.username
+            'nickname': user.nickname
         },
         "token": token
     })
