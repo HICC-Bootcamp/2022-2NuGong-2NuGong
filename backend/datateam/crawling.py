@@ -1,7 +1,11 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import json
+import classificationFunc as classification
+#대괄호 없애기 코드
+import re
 
+department = "00"
 #각각의 공지 사이트와 첨부파일의 링크를 리스트에 정리하는 코드
 def chamsae_1():
     print("게시판 메뉴")
@@ -11,6 +15,8 @@ def chamsae_1():
     print("54: 컴퓨터 공학과 공지")
     print("크롤링할 게시판을 선택하세요: ", end = "")
     whichBoard = input()
+    if whichBoard == 2 or whichBoard == 3 or whichBoard == 6:
+        department = "00"
     print("크롤링할 페이지의 범위를 입력하세요(예:1 3): ")
     page_start, page_end = map(int,input().split())
     lst_notice_link = []
@@ -32,6 +38,7 @@ def chamsae_1():
                 lst_notice_link.append([href])
     return lst_notice_link
     
+
 
 
 def chamsae_2():
@@ -60,7 +67,7 @@ def chamsae_2():
             view_cnt = ""
         b = soup.find_all("div","substance")
         try:
-            d = {"title" : title, "when" : when, "view_cnt" : view_cnt, "content" : b[0].text}
+            d = {"title" : (re.sub(r'\[[^)]*\]','',title)), "create_at" : when, "views" : view_cnt, "tag" : classification.findNoticeTag(title), "department" : department, "contents" : b[0].text}
             
             json_lst.append(d)
             """print(title, when, view_cnt, b[0].text)
@@ -96,5 +103,43 @@ if(chamsae_3() == 1):
 else:
     print("실패")
     
-    
+# def findNoticeTag(noticeTitle):
+#     keywordlist = ["도서관", "고사", "전과", "장학", "동아리", "채용", "취업",
+#         "기숙사", "휴학·복학", "성적", "계절", "봉사", "교육", "서포터즈", "프로그램"]
+#     isinlist = []
+#     for keyword in keywordlist:
+#         if keyword in noticeTitle:
+#             isinlist.append(1)
+#         else:
+#             isinlist.append(0)
+#     # for j in isinlist:
+#     #     print(j,end= " ")
+#     # 여기까지 가능한 형태 [000001000100001]
+#     flag = 0
+#     onehot_isinlist = []
+#     for i in isinlist:
+#         if (i == 1) and (flag == 0):
+#             flag += 1
+#             onehot_isinlist.append(1)
+#         elif (i == 1) and (flag == 1):
+#             onehot_isinlist.append(0)
+#         else:
+#             onehot_isinlist.append(0)
+#     # print("flag = ",flag,"\n")
+#     if flag == 0:
+#         onehot_isinlist.append(1)
+#     else:
+#         onehot_isinlist.append(0)
+#         # 다 [000000000000000] 이면 기타로 분류 [0000000000000001]
+#         # [str(universe),str(major),"전과","조교","기숙사","취업","채용","휴학.복학", "성적", "계절", "교육", "계절", "교육","서포터즈", "프로그램", "장학","봉사", "고사", "성적", "동아리", "도서관", "기타"]
+#     for i, onehot in enumerate(onehot_isinlist):
+#         if onehot == 1:
+#             if i < 9:
+#                 #print("0" + str(i+1))
+#                 return "0" + str(i+1) # 태그번호 1~9까지는 앞에 0을 붙여줌
+#             else:
+#                 #print(str(i+1))
+#                 return str(i+1) #태크번호 10~16
+#     #print(17)
+#     return "17" #태그 번호 17은 기타로 분류
     
