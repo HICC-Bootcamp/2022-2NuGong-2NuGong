@@ -7,7 +7,7 @@ from knox.auth import AuthToken
 from .serializer import RegisterSerializer
 from .serializer import NoticeSerializer
 from rest_framework.views import APIView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from rest_framework import generics
 from rest_framework import mixins
 
@@ -56,6 +56,12 @@ class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
-class NoticeList(ListView):
-    model = Notice
-    template_name = "notice.html"
+
+class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
+    serializer_class = NoticeSerializer
+
+    def get_queryset(self):
+        return Notice.objects.all().order_by('id')
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
