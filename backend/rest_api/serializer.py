@@ -29,3 +29,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=password,
         )
         return user
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields = ('department', 'favorites')
