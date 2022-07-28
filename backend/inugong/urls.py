@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_api.views import NoticeListAPI, NoticeDetailAPI
+from rest_api.views import NoticeListAPI, NoticeDetailAPI, SearchAPI
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('rest_api.urls')),
     path('notice/', NoticeListAPI.as_view()),
-    path('notice/<int:pk>/', NoticeDetailAPI.as_view())
+    path('notice/<int:pk>/', NoticeDetailAPI.as_view()),
+    path('search/', SearchAPI.as_view()),
 ]

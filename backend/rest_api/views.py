@@ -53,7 +53,6 @@ class LoginAccountAPI(APIView):
             "token": token
         })
 
-<<<<<<< HEAD
 class InfoAPI(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -73,7 +72,6 @@ class InfoAPI(APIView):
         serializer.save()
         
         return Response(serializer.data)
-=======
 class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     serializer_class = NoticeSerializer
 
@@ -92,4 +90,17 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
->>>>>>> 8ded49382f5ac361705e20bb78e46e2f69afe068
+
+
+class SearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
+    permission_classes = [AllowAny]
+    serializer_class = NoticeSerializer
+    def get_queryset(self):
+        query = self.request.GET['query']
+        if query:
+            return Notice.objects.filter(title__contains=query)
+        else:
+            return 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
