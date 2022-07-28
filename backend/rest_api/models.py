@@ -6,11 +6,11 @@ from django.contrib.auth.models import AbstractBaseUser, AbstractUser, BaseUserM
 
 class UserManager(BaseUserManager):
     # 일반 유저 생성
-    def create_user(self, nickname, password=None):
+    def create_user(self, nickname, password=None, favorites=None):
         if not nickname:
             raise ValueError("nickname required")
         
-        user = self.model(nickname = nickname)
+        user = self.model(nickname = nickname, favorites = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
         user.set_password(password)
         user.save(using=self._db)
