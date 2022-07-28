@@ -1,3 +1,4 @@
+from ast import Return
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
@@ -63,11 +64,10 @@ class InfoAPI(APIView):
     #     serializer = UserInfoSerializer(data=request.data)
     #     serializer.is_valid(raise_exception=True)
     #     serializer.save()
-
     #     return Response({'error': 'not authenticated'}, status=400)
 
     def put(self, request):
-        serializer =UserInfoSerializer(request.user ,data=request.data, partial = True)
+        serializer = UserInfoSerializer(request.user ,data=request.data, partial = True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         
@@ -88,8 +88,22 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
     def get_queryset(self):
         return Notice.objects.all().order_by('id')
 
+    def viewIncrease(self, user_nickname, notice_id):
+        tag = Notice.objects.get(id=notice_id).tag
+        user=User.objects.get(nickname=user_nickname)
+        favorites = user.favorites
+        viewCount = favorites[tag]
+        viewCount += 1
+        favorites[tag] = viewCount
+        user.favorites = favorites
+        user.save()
+        return
+
     def get(self, request, *args, **kwargs):
+        notice_id = kwargs['pk']
+        self.viewIncrease(request.user, notice_id)
         return self.retrieve(request, *args, **kwargs)
+
 
 
 class SearchAPI(generics.GenericAPIView, mixins.ListModelMixin):

@@ -9,8 +9,8 @@ class UserManager(BaseUserManager):
     def create_user(self, nickname, password=None, favorites=None):
         if not nickname:
             raise ValueError("nickname required")
-        
-        user = self.model(nickname = nickname, favorites = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        #아래줄의 리스트에서 0번째 인덱스는 tag번호와 인덱스를 일치시키기 위헤 존재함. 즉, 사용하지 않음.
+        user = self.model(nickname = nickname, favorites = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
         user.set_password(password)
         user.save(using=self._db)
