@@ -45,7 +45,7 @@
         </td>
     </tr>
 </table>
-            
+
 ## Getting Started
 Step1) "python -m venv venv"를 통해 가상환경 생성
 <br>
@@ -72,3 +72,13 @@ Step5) 다음의 명령어를 순서대로 입력하여 migrate
 </ul>
 
 Step6) "python manage.py runserver"로 실행
+<br>
+Step7) "http://127.0.0.1:8000/"의 뒤에 다음의 항목을 추가하면 각 페이지로 이동.
+<br>
+<ul>
+    <li><회원가입> "user/register/"</li>
+    <li><로그인> "user/login/"</li>
+    <li><공지 목록> "notice/"</li>
+    <li><공지 내용> "notice/<공지id>"</li>
+</ul>
+<br>
