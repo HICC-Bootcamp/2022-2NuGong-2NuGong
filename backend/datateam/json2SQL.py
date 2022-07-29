@@ -47,7 +47,7 @@ try:
         dbname = "zahzrhge",
         user = "zahzrhge",
         host = "arjuna.db.elephantsql.com",
-        password = "U4m58U9Tr90f1mA6jqj5samQXMhdTF54",
+        password = "메롱",
         # attempt to connect for 3 seconds then raise exception
         connect_timeout = 3
     )
