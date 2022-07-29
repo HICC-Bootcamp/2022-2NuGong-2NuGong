@@ -20,6 +20,7 @@ from rest_framework.views import APIView
 from django.views.generic import ListView, DetailView
 from rest_framework import generics
 from rest_framework import mixins
+from ..datateam.recommendation import recommend #recommendation.py에서 구현할 recommend 함수
 
 class CreateAccountAPI(APIView):
     permission_classes = [AllowAny]
@@ -99,6 +100,7 @@ class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 
 
 class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
+    permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
 
     def get_queryset(self):
@@ -121,7 +123,6 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
         return self.retrieve(request, *args, **kwargs)
 
 
-
 class SearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
@@ -134,3 +135,15 @@ class SearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+
+class NoticeSuggestionListAPI(generics.GerenicAPIView, mixins.ListModelMixin):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        recommended_list = recommend(user.favorites)
+        return Notice.objects.filter(tag__contained_by=recommended_list)
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
