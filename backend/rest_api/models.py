@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
@@ -34,8 +34,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     nickname = models.CharField(max_length=10, unique=True)
     department = models.IntegerField(null=True)
-    favorites = ArrayField(models.IntegerField(), null=True)
-    subscribe = ArrayField(models.IntegerField(), null=True)
+    favorites = ArrayField(models.IntegerField(), null=True) #태그 별 조회수 저장, 추후 컬럼명 favorites -> tagviews으로 변경 필요
+    subscribe = ArrayField(models.IntegerField(), null=True) #관심 태그 저장
     # User 모델의 필수 field
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
