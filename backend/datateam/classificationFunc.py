@@ -34,9 +34,11 @@ def findNoticeTag(noticeTitle):
                 return "0" + str(i+1) # 태그번호 1~9까지는 앞에 0을 붙여줌
             else:
                 #print(str(i+1))
+
                 return str(i+1) #태크번호 10~16 기타 는 16
     #print(17)
     #return "18"   
+
     
     
     
