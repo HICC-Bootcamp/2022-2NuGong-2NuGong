@@ -56,7 +56,7 @@ class LoginAccountAPI(APIView):
             "token": token
         })
 
-class InfoAPI(APIView):
+class UserInfoAPI(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     # def post(self, request):
@@ -123,7 +123,7 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
         return self.retrieve(request, *args, **kwargs)
 
 
-class SearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
+class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
     def get_queryset(self):
