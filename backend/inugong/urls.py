@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_api.views import NoticeListAPI, NoticeDetailAPI, SearchAPI, NoticeSuggestionListAPI
-
+from rest_api.views import NoticeListAPI, NoticeDetailAPI, NoticeSearchAPI, NoticeSuggestionListAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +23,5 @@ urlpatterns = [
     path('notice/', NoticeListAPI.as_view()),
     path('notice/recommend/', NoticeSuggestionListAPI.as_view()),
     path('notice/<int:pk>/', NoticeDetailAPI.as_view()),
-    path('search/', SearchAPI.as_view()),
+    path('search/', NoticeSearchAPI.as_view()),
 ]
