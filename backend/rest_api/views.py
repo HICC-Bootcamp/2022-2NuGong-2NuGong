@@ -1,4 +1,5 @@
 from ast import Return
+from sre_constants import SUCCESS
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
@@ -6,7 +7,7 @@ from rest_framework.response import Response
 from .models import Notice
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
-from .serializer import RegisterSerializer, UserInfoSerializer
+from .serializer import RegisterSerializer
 from rest_framework.views import APIView
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -67,11 +68,26 @@ class InfoAPI(APIView):
     #     return Response({'error': 'not authenticated'}, status=400)
 
     def put(self, request):
-        serializer = UserInfoSerializer(request.user ,data=request.data, partial = True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        
-        return Response(serializer.data)
+        user=User.objects.get(nickname=request.user)
+        subscribe=user.subscribe
+        clicked = dict(request.data)
+        clickedTag = clicked["subscribe"]
+        selectedDepartment = clicked["department"]
+        #subscribe 수정
+        for i in clickedTag:
+            index = int(i)
+            
+            if(subscribe[index] == 0):
+                subscribe[index] = 1
+            else:
+                subscribe[index] = 0
+
+        user.subscribe = subscribe
+        #department 수정
+        user.department=int(selectedDepartment[0])
+        user.save()
+        return HttpResponse("successfully done")
+
 class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     serializer_class = NoticeSerializer
 
@@ -97,7 +113,7 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
         favorites[tag] = viewCount
         user.favorites = favorites
         user.save()
-        return
+        return 
 
     def get(self, request, *args, **kwargs):
         notice_id = kwargs['pk']

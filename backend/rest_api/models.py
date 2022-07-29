@@ -6,11 +6,11 @@ from django.contrib.auth.models import AbstractBaseUser, AbstractUser, BaseUserM
 
 class UserManager(BaseUserManager):
     # 일반 유저 생성
-    def create_user(self, nickname, password=None, favorites=None):
+    def create_user(self, nickname, password=None, favorites=None, subscribe = None):
         if not nickname:
             raise ValueError("nickname required")
         #아래줄의 리스트에서 0번째 인덱스는 tag번호와 인덱스를 일치시키기 위헤 존재함. 즉, 사용하지 않음.
-        user = self.model(nickname = nickname, favorites = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        user = self.model(nickname = nickname, favorites = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], subscribe = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
         user.set_password(password)
         user.save(using=self._db)
@@ -35,7 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=10, unique=True)
     department = models.IntegerField(null=True)
     favorites = ArrayField(models.IntegerField(), null=True)
-
+    subscribe = ArrayField(models.IntegerField(), null=True)
     # User 모델의 필수 field
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

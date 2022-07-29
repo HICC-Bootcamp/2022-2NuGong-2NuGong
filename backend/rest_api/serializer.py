@@ -31,10 +31,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=User
-        fields = ('department', 'favorites')
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
