@@ -45,3 +45,40 @@
         </td>
     </tr>
 </table>
+
+## Getting Started
+Step1) "python -m venv venv"를 통해 가상환경 생성
+<br>
+Step2) 가상환경이 생성된 디렉토리에서 다음의 명령어를 순서대로 입력하여 가상환경에 진입
+
+<ul>
+    <li>"cd venv"</li>
+    <li>"cd Scripts"</li>
+    <li>"activate"</li>
+</ul>
+Step3) 다음의 명령어를 순서대로 입력하여 manage.py가 있는 폴더로 이동
+<br>
+<ul>
+    <li>"cd 2022-2NuGong-2NuGong"</li>
+    <li>"cd backend"</li>
+</ul>
+Step4) "pip install -r requirements.txt"을 입력하여 dependencies 다운로드
+<br>
+Step5) 다음의 명령어를 순서대로 입력하여 migrate
+<br>
+<ul>
+    <li>"python manage.py makemigrations"</li>
+    <li>"python manage.py migrate"</li>
+</ul>
+
+Step6) "python manage.py runserver"로 실행
+<br>
+Step7) "http://127.0.0.1:8000/"의 뒤에 다음의 항목을 추가하면 각 페이지로 이동.
+<br>
+<ul>
+    <li><회원가입> "user/register/"</li>
+    <li><로그인> "user/login/"</li>
+    <li><공지 목록> "notice/"</li>
+    <li><공지 내용> "notice/<공지id>"</li>
+</ul>
+<br>
