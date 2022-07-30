@@ -19,7 +19,7 @@ from rest_framework.views import APIView
 from django.views.generic import ListView, DetailView
 from rest_framework import generics
 from rest_framework import mixins
-from ..datateam.recommendation import recommend #recommendation.py에서 구현할 recommend 함수
+from datateam.recommendation import recommendation #recommendation.py에서 구현할 recommend 함수
 
 class CreateAccountAPI(APIView):
     permission_classes = [AllowAny]
@@ -141,7 +141,7 @@ class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        recommended_list = recommend(user.favorites)
+        recommended_list = recommendation(user.favorites)
         return Notice.objects.filter(tag__contained_by=recommended_list)
     
     def get(self, request, *args, **kwargs):
