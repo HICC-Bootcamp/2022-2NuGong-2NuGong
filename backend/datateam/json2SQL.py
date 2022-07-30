@@ -44,12 +44,17 @@ def json2sql(updateNotice):
     print ("\nSQL statement:")
     print (sql_string)
     try:
+        try:
+            with open("credentials.json", 'r') as f:
+                credentials = json.loads(f.read())
+        except:
+            print("credentials.json open failed")
         # declare a new PostgreSQL connection object
         conn = connect(
-            dbname = "zahzrhge",
-            user = "zahzrhge",
-            host = "arjuna.db.elephantsql.com",
-            password = "U4m58U9Tr90f1mA6jqj5samQXMhdTF54",
+            dbname = credentials["DB_NAME"],
+            user = credentials["DB_USER"],
+            host = credentials["DB_HOST"],
+            password = credentials["DB_PASSWORD"],
             # attempt to connect for 3 seconds then raise exception
             connect_timeout = 3
         )
