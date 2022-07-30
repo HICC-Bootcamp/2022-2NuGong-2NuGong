@@ -61,7 +61,7 @@ def update_Detect():
     #     print("Nothing new")
     #     latest1 = first_record[0]["title"]
     #     # latest1 = newNotice["title"]
-        
+    
     
     
 # job2 = schedule.every(30).seconds.do(update_Detect)
@@ -71,18 +71,7 @@ job1 = schedule.every(30).seconds.do(cr.chamsae_3, '2', 2, 3)
 job2 = schedule.every(30).seconds.do(update_Detect)
 job3 = schedule.every(30).seconds.do(cr.chamsae_3, '2', 1, 3)
 job4 = schedule.every(30).seconds.do(update_Detect)
-# job3 = time.sleep(10)
-# job4 = schedule.every(60).seconds.do(cr.chamsae_3, '3', 1, 1)
-# job5 = db.json2sql()
-# job6 = time.sleep(10)
-# job7 = schedule.every(60).seconds.do(cr.chamsae_3, '6', 1, 1)
-# job8 = db.json2sql()
-# job9 = time.sleep(10)
-# job10 = schedule.every(60).seconds.do(cr.chamsae_3, '54', 1, 1)
-# job11 = db.json2sql()
 
-# job12 = time.sleep(10)
-# # 1분에 한번씩 함수 실행
 
 count = 0
 while True:
