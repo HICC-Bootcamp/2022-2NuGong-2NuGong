@@ -1,16 +1,16 @@
 # import Python's built-in JSON library
 import json, sys
-import crawling as cr
 # import the psycopg2 database adapter for PostgreSQL
 from psycopg2 import connect, Error
 
-def json2sql():
+def json2sql(a):
     # use Python's open() function to load the JSON data
-    with open('test.json', encoding='utf-8') as json_data:
+    # with open('test.json', encoding='utf-8') as json_data:
 
-        # use load() rather than loads() for JSON files
-        record_list = json.load(json_data, strict=False)
-    first_record = record_list["sample"]
+    #     # use load() rather than loads() for JSON files
+    #     record_list = json.load(json_data)
+    #     print("recordlst",record_list)
+    first_record = a["sample"]
     # if type(record_list) == list:
     #     first_record = record_list[0]
     # get the column names from the first record
@@ -77,9 +77,3 @@ def json2sql():
         # close the cursor and connection
         cur.close()
         conn.close()
-
-def main():
-    cr.chamsae_3('2', 2 , 3)
-    json2sql()
-
-main()

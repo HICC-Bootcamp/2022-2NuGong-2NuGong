@@ -113,7 +113,7 @@ def chamsae_3(which, start, end):
     json_dict = {}
     json_dict['sample'] = json_lst
     # json_dict["sample"].append(json_lst)
-    print(json_dict)
+    # print(json_dict)
     print("여기까지오키")
     
     try:
