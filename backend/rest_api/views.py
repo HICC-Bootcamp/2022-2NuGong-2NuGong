@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Notice
+from .models import Bookmark, Notice
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
 from .serializer import RegisterSerializer
@@ -14,8 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import AuthToken
-from .serializer import RegisterSerializer
-from .serializer import NoticeSerializer
+from .serializer import RegisterSerializer, BookmarkSerializer, NoticeSerializer
 from rest_framework.views import APIView
 from django.views.generic import ListView, DetailView
 from rest_framework import generics
@@ -94,7 +93,7 @@ class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         return Notice.objects.all().order_by('id')
-
+        
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -136,7 +135,7 @@ class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return self.list(request, *args, **kwargs)
 
 
-class NoticeSuggestionListAPI(generics.GerenicAPIView, mixins.ListModelMixin):
+class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
@@ -147,3 +146,28 @@ class NoticeSuggestionListAPI(generics.GerenicAPIView, mixins.ListModelMixin):
     
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+class NoticeBookmarkAPI(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [AllowAny] #(IsAuthenticated,)  edit before release
+    def post(self, request):
+        print(111)
+        serializer = BookmarkSerializer(data=request.data)
+        print(111)
+        serializer.is_valid(raise_exception=True)
+        user=serializer.save()
+        
+        return HttpResponse("successfully done")
+
+# class BookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
+#     permission_classes = [AllowAny]
+#     serializer_class = BookmarkSerializer
+#     def get_queryset(self):
+#         user = self.request.user
+#         if user:
+#             bookmarkList = Bookmark.objects.filter(user_id=user)
+            
+#         else:
+#             return 
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
