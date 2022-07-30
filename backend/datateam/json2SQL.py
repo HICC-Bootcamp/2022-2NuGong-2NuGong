@@ -44,11 +44,12 @@ def json2sql(updateNotice):
     print ("\nSQL statement:")
     print (sql_string)
     try:
-        try:
-            with open("credentials.json", 'r') as f:
-                credentials = json.loads(f.read())
-        except:
-            print("credentials.json open failed")
+        with open("backend\credentials.json", encoding='utf-8') as f:
+            credentials = json.loads(f.read())
+        # try:
+            
+        # except:
+        #     print("credentials.json open failed")
         # declare a new PostgreSQL connection object
         conn = connect(
             dbname = credentials["DB_NAME"],
