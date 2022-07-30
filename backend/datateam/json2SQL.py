@@ -4,7 +4,7 @@ import crawling as cr
 # import the psycopg2 database adapter for PostgreSQL
 from psycopg2 import connect, Error
 
-def json2sql():
+def json2sql(a):
     # use Python's open() function to load the JSON data
     with open('test.json', encoding='utf-8') as json_data:
 
@@ -78,8 +78,8 @@ def json2sql():
         cur.close()
         conn.close()
 
-def main():
-    cr.chamsae_3('2', 2 , 3)
-    json2sql()
+# def main():
+#     cr.chamsae_3('2', 2 , 3)
+#     json2sql()
 
-main()
+# main()

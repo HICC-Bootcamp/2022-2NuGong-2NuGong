@@ -1,5 +1,3 @@
-from matplotlib.colors import same_color
-from matplotlib.font_manager import json_dump
 import schedule
 import time
 import json
@@ -27,9 +25,9 @@ def update_Detect():
         notice_update_dict = {}
         notice_update_dict["sample"] = newNotice
         print(notice_update_dict)
-        with open('test.json', 'w', encoding='utf-8') as file:
-            json.dump(notice_update_dict, file, ensure_ascii = False)
-            db.json2sql() #여기가 문제임.
+        # with open('test.json', 'w', encoding='utf-8') as file:
+        #     json.dump(notice_update_dict, file, ensure_ascii = False)
+        db.json2sql(notice_update_dict) #여기가 문제임.
         print("잘 들어감")
         # try:
             
