@@ -12,11 +12,15 @@ def update_Detect():
         # use load() rather than loads() for JSON files
         record_list = json.load(json_data)
         first_record = record_list["sample"] #list형태
-        
-        print("바바보")
+         
     try: 
-        
-        newNotice = first_record[0:first_record.find(latest1)]
+        cnt = 0
+        for i in first_record:
+            if(i["title"] == latest1):
+                break
+            else:
+                cnt += 1
+        newNotice = first_record[0:cnt+1]
         latest1 = first_record[0]["title"]
         if newNotice != []:
             #디비에 넣기
@@ -24,16 +28,15 @@ def update_Detect():
                 with open('test.json', 'w', encoding='utf-8') as file:
                     for i in newNotice:
                         json.dump(i, file, ensure_ascii = False)
-                        db.json2sql()
+                        
+                        db.json2sql() #여기가 문제임.
                 print("잘 들어감")
             except:
-                print("실패")
-        else:
-            
-            print("바보")
+                print("failure: couldn't dump data to database")
+        # else: 쓰임이 없는 else문이라 주석처리함.
     except:
-        print("업데이트안댐")
-        # newNotice = first_record[0]
+        print("Nothing new")
+        latest1 = first_record[0]["title"]
         # latest1 = newNotice["title"]
         
     
@@ -62,3 +65,5 @@ count = 0
 while True:
     schedule.run_pending()
     time.sleep(1)
+
+
