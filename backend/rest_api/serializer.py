@@ -1,5 +1,5 @@
 from rest_framework import serializers, validators
-from .models import User
+from .models import Notice, User
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=password,
         )
         return user
+
+
+class NoticeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notice
+        fields = '__all__' #모든 필드로 지정함
