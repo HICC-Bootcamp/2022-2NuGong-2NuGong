@@ -1,3 +1,4 @@
+from re import I
 import schedule
 import time
 import json
@@ -10,7 +11,7 @@ def update_Detect():
     global latest1
     with open('test.json', encoding='utf-8') as json_data:
         # use load() rather than loads() for JSON files
-        record_list = json.load(json_data)
+        record_list = json.loads(json_data.read())
         first_record = record_list["sample"] #list형태
          
     try: 
@@ -24,12 +25,15 @@ def update_Detect():
         latest1 = first_record[0]["title"]
         if newNotice != []:
             #디비에 넣기
+            update_notice_dict = dict()
+            update_notice_dict["sample"] = []
+            for i in newNotice:
+                update_notice_dict["sample"].append(i)
             try:
                 with open('test.json', 'w', encoding='utf-8') as file:
-                    for i in newNotice:
-                        json.dump(i, file, ensure_ascii = False)
-                        
-                        db.json2sql() #여기가 문제임.
+                    json.dump(update_notice_dict, file, ensure_ascii = False)
+                    db.json2sql() #여기가 문제임.
+                    print("젭알")
                 print("잘 들어감")
             except:
                 print("failure: couldn't dump data to database")
@@ -62,8 +66,16 @@ job4 = schedule.every(30).seconds.do(update_Detect)
 # # 1분에 한번씩 함수 실행
 
 count = 0
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+while count<1:
+    cr.chamsae_3('2', 2, 3)
+    time.sleep(10)
+    update_Detect()
+    time.sleep(10)
+    cr.chamsae_3('2', 1, 3)
+    time.sleep(10)
+    update_Detect()
+    # schedule.run_pending()
+    time.sleep(10)
+    count += 1
 
 
