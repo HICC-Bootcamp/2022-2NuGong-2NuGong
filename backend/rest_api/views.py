@@ -20,6 +20,7 @@ from datateam.recommendation import recommendation #recommendation.py에서 구�
 
 class CreateAccountAPI(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -37,6 +38,7 @@ class CreateAccountAPI(APIView):
 
 class LoginAccountAPI(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True) #username과 password가 옳지 않을 때 raise exception
@@ -123,6 +125,7 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
 class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
+
     def get_queryset(self):
         try:
             query = self.request.GET['query']
@@ -137,11 +140,12 @@ class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
 class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = NoticeSerializer
 
     def get_queryset(self):
         user = self.request.user
         recommended_list = recommendation(user.favorites)
-        return Notice.objects.filter(tag__contained_by=recommended_list)
+        return Notice.objects.filter(tag__in=[11])
     
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
