@@ -48,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     department = models.IntegerField(null=True)
     favorites = ArrayField(models.IntegerField(), null=True) #태그 별 조회수 저장, 추후 컬럼명 favorites -> tagviews으로 변경 필요
     subscribe = ArrayField(models.IntegerField(), null=True) #관심 태그 저장
-    bookmarks = models.ManyToManyField(Notice)
+    bookmarks = models.ManyToManyField(Notice, related_name="users")
     # User 모델의 필수 field
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
