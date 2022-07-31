@@ -14,78 +14,82 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import AuthToken
 from .serializer import RegisterSerializer, NoticeSerializer
 from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework import mixins
+from rest_framework import generics, mixins, status
 from datateam.recommendation import recommendation #recommendation.py에서 구현할 recommend 함수
+
 
 class CreateAccountAPI(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        try:
+            serializer = RegisterSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
 
-        _, token = AuthToken.objects.create(user)
+            _, token = AuthToken.objects.create(user)
 
-        return Response({
-            'user_info': {
-                'id': user.id,
-                'nickname': user.nickname
+            return Response({
+                'user_info': {
+                    'id': user.id,
+                    'nickname': user.nickname
+                },
+                "token": token
             },
-            "token": token
-        })
+            status=status.HTTP_200_OK)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class LoginAccountAPI(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = AuthTokenSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True) #username과 password가 옳지 않을 때 raise exception
-        user = serializer.validated_data['user']
+        try:
+            serializer = AuthTokenSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True) #username과 password가 옳지 않을 때 raise exception
+            user = serializer.validated_data['user']
 
-        _, token = AuthToken.objects.create(user)
+            _, token = AuthToken.objects.create(user)
 
-        return Response({
-            'user_info': {
-                'id': user.id,
-                'nickname': user.nickname
+            return Response({
+                'user_info': {
+                    'id': user.id,
+                    'nickname': user.nickname
+                },
+                "token": token
             },
-            "token": token
-        })
+            status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class UserInfoAPI(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    # def post(self, request):
-    #     # user = request.COOKIES
-    #     # print(user)
-    #     print(request)
-    #     serializer = UserInfoSerializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response({'error': 'not authenticated'}, status=400)
 
     def put(self, request):
-        user=User.objects.get(nickname=request.user)
-        subscribe=user.subscribe
-        clicked = dict(request.data)
-        clickedTag = clicked["subscribe"]
-        selectedDepartment = clicked["department"]
-        #subscribe 수정
-        for i in clickedTag:
-            index = int(i)
-            
-            if(subscribe[index] == 0):
-                subscribe[index] = 1
-            else:
-                subscribe[index] = 0
+            try:
+                user=User.objects.get(nickname=request.user)
+                subscribe=user.subscribe
+                clicked = dict(request.data)
+                clickedTag = clicked["subscribe"]
+                selectedDepartment = clicked["department"]
+                #subscribe 수정
+                for i in clickedTag:
+                    index = int(i)
+                    
+                    if(subscribe[index] == 0):
+                        subscribe[index] = 1
+                    else:
+                        subscribe[index] = 0
 
-        user.subscribe = subscribe
-        #department 수정
-        user.department=int(selectedDepartment[0])
-        user.save()
-        return HttpResponse("successfully done")
+                user.subscribe = subscribe
+                #department 수정
+                user.department=int(selectedDepartment[0])
+                user.save()
+                return Response(status=status.HTTP_202_ACCEPTED)
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
@@ -95,8 +99,10 @@ class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return Notice.objects.all().order_by('id')
         
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
+        try:
+            return self.list(request, *args, **kwargs)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
     permission_classes = [AllowAny]
@@ -116,11 +122,13 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
         user.save()
         return 
 
-    def get(self, request, *args, **kwargs):
-        notice_id = kwargs['pk']
-        self.viewIncrease(request.user, notice_id)
-        return self.retrieve(request, *args, **kwargs)
-
+    def get(self, request, *args, **kwargs):      
+        try:
+            notice_id = kwargs['pk']
+            self.viewIncrease(request.user, notice_id)
+            return self.retrieve(request, *args, **kwargs)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
@@ -134,8 +142,10 @@ class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
             department = self.request.GET['department']
             return Notice.objects.filter(department__contains=department)
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
+        try:
+            return self.list(request, *args, **kwargs)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
@@ -148,25 +158,33 @@ class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return Notice.objects.filter(tag__in=[11])
     
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        try:
+            return self.list(request, *args, **kwargs)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class NoticeBookmarkAPI(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = [AllowAny] #(IsAuthenticated,)  edit before release
 
     def put(self, request):
-        user = self.request.user
-        id = request.data["notice_id"]
-        user.bookmarks.add(id)
-        user.save()
-        return HttpResponse("successfully done")
-    
+        try:
+            user = self.request.user
+            id = request.data["notice_id"]
+            user.bookmarks.add(id)
+            user.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
     def delete(self, request):
-        user = self.request.user
-        id = request.data["notice_id"]
-        user.bookmarks.remove(id)
-        user.save()
-        return HttpResponse("successfully done")
+        try:
+            user = self.request.user
+            id = request.data["notice_id"]
+            user.bookmarks.remove(id)
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
@@ -178,4 +196,7 @@ class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return Notice.objects.filter(users__id__contains=user.id)
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        try:
+            return self.list(request, *args, **kwargs)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
