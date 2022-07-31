@@ -171,7 +171,7 @@ class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return Notice.objects.filter(user=self.request.user)
+        return Notice.objects.filter(users__id=self.request.user.id)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
