@@ -4,26 +4,23 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Notice
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
-from .serializer import RegisterSerializer
 from rest_framework.views import APIView
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import User
+from .models import User, Notice
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import AuthToken
-from .serializer import RegisterSerializer
-from .serializer import NoticeSerializer
+from .serializer import RegisterSerializer, NoticeSerializer
 from rest_framework.views import APIView
-from django.views.generic import ListView, DetailView
 from rest_framework import generics
 from rest_framework import mixins
-from ..datateam.recommendation import recommend #recommendation.py에서 구현할 recommend 함수
+from datateam.recommendation import recommendation #recommendation.py에서 구현할 recommend 함수
 
 class CreateAccountAPI(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -41,6 +38,7 @@ class CreateAccountAPI(APIView):
 
 class LoginAccountAPI(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True) #username과 password가 옳지 않을 때 raise exception
@@ -90,11 +88,12 @@ class UserInfoAPI(APIView):
         return HttpResponse("successfully done")
 
 class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
+    permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
 
     def get_queryset(self):
         return Notice.objects.all().order_by('id')
-
+        
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -126,24 +125,57 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
 class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
+
     def get_queryset(self):
-        query = self.request.GET['query']
-        if query:
+        try:
+            query = self.request.GET['query']
             return Notice.objects.filter(title__contains=query)
-        else:
-            return 
+        except:
+            department = self.request.GET['department']
+            return Notice.objects.filter(department__contains=department)
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 
-class NoticeSuggestionListAPI(generics.GerenicAPIView, mixins.ListModelMixin):
+class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = NoticeSerializer
 
     def get_queryset(self):
         user = self.request.user
-        recommended_list = recommend(user.favorites)
-        return Notice.objects.filter(tag__contained_by=recommended_list)
+        recommended_list = recommendation(user.favorites)
+        return Notice.objects.filter(tag__in=[11])
     
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+class NoticeBookmarkAPI(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [AllowAny] #(IsAuthenticated,)  edit before release
+
+    def put(self, request):
+        user = self.request.user
+        id = request.data["notice_id"]
+        user.bookmarks.add(id)
+        user.save()
+        return HttpResponse("successfully done")
+    
+    def delete(self, request):
+        user = self.request.user
+        id = request.data["notice_id"]
+        user.bookmarks.remove(id)
+        user.save()
+        return HttpResponse("successfully done")
+
+class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [AllowAny]
+    serializer_class = NoticeSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Notice.objects.filter(users__id__contains=user.id)
+
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
