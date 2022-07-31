@@ -93,12 +93,13 @@ def chamsae_2(which, start, end):
                 tag = "17"
             else:
                 tag = classification.findNoticeTag(title)
+            view_cnt = int(view_cnt)
             
-            d = {"title" : title, "create_at" : when, "views" : view_cnt, "tag" : tag, "department" : department, "contents" : b[0].text}
+            d = {"title" : title, "create_at" : when, "views" : view_cnt, "tag" : tag, "department" : department, "contents" : b[0].text, "urls" : url}
             
             json_lst.append(d)
-            """print(title, when, view_cnt, b[0].text)
-            print('\n')"""
+            print(url, title, when, view_cnt, b[0].text)
+            print('\n')
         except:
             continue
     return json_lst

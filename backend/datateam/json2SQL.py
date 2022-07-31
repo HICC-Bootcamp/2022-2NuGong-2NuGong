@@ -3,14 +3,14 @@ import json, sys
 # import the psycopg2 database adapter for PostgreSQL
 from psycopg2 import connect, Error
 
-def json2sql(a):
+def json2sql(updateNotice):
     # use Python's open() function to load the JSON data
     # with open('test.json', encoding='utf-8') as json_data:
 
     #     # use load() rather than loads() for JSON files
     #     record_list = json.load(json_data)
     #     print("recordlst",record_list)
-    first_record = a["sample"]
+    first_record = updateNotice["sample"]
     # if type(record_list) == list:
     #     first_record = record_list[0]
     # get the column names from the first record
@@ -44,12 +44,18 @@ def json2sql(a):
     print ("\nSQL statement:")
     print (sql_string)
     try:
+        with open("backend\credentials.json", encoding='utf-8') as f:
+            credentials = json.loads(f.read())
+        # try:
+            
+        # except:
+        #     print("credentials.json open failed")
         # declare a new PostgreSQL connection object
         conn = connect(
-            dbname = "zahzrhge",
-            user = "zahzrhge",
-            host = "arjuna.db.elephantsql.com",
-            password = "U4m58U9Tr90f1mA6jqj5samQXMhdTF54",
+            dbname = credentials["DB_NAME"],
+            user = credentials["DB_USER"],
+            host = credentials["DB_HOST"],
+            password = credentials["DB_PASSWORD"],
             # attempt to connect for 3 seconds then raise exception
             connect_timeout = 3
         )
