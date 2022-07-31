@@ -171,7 +171,6 @@ class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        print(user.id)
         return Notice.objects.filter(users__id__contains=user.id)
 
     def get(self, request, *args, **kwargs):
