@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, SafeAreaView, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import styled from 'styled-components/native';
 import FontText from '../../components/FontText';
 
@@ -34,6 +41,12 @@ const ArticleScreen = ({ route }) => {
           <ArticleWrapper>
             <AritcleTag>[{convertTag[data.tag]}]</AritcleTag>
             <ArticleTitle>{data.title}</ArticleTitle>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(data.url);
+              }}>
+              <AritcleLink>[원문 보기]</AritcleLink>
+            </TouchableOpacity>
             <ArticleDescription>{data.contents}</ArticleDescription>
           </ArticleWrapper>
         </ScrollWrapper>
@@ -74,10 +87,19 @@ const ArticleTitle = styled.Text`
   color: #262626;
 `;
 
+const AritcleLink = styled.Text`
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration-line: underline;
+
+  color: rgba(3, 17, 144, 0.63);
+  margin-top: 40px;
+`;
+
 const ArticleDescription = styled.Text`
   font-weight: 500;
   font-size: 15px;
-  margin-top: 30px;
+  margin-top: 10px;
   color: #646464;
   white-space: pre;
   word-break: keep-all;
