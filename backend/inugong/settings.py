@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'knox',
-    'rest_api'
+    'rest_api',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

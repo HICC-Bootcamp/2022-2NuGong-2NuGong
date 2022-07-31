@@ -17,6 +17,23 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_api.views import NoticeListAPI, NoticeDetailAPI, NoticeSearchAPI, NoticeSuggestionListAPI
 
+#drf-yasg
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Inugong API",
+        default_version='v1',
+        description="이누공 서비스의 API 문서 페이지 입니다.",
+    ),
+    validators=['flex'], #'ssv'],
+    public=True,
+    permission_classes=[permissions.AllowAny]
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('rest_api.urls')),
@@ -24,4 +41,6 @@ urlpatterns = [
     path('notice/recommend/', NoticeSuggestionListAPI.as_view()),
     path('notice/<int:pk>/', NoticeDetailAPI.as_view()),
     path('search/', NoticeSearchAPI.as_view()),
+
+    path('docs/', schema_view.with_ui("swagger", cache_timeout=0), name="schema-docs")
 ]
