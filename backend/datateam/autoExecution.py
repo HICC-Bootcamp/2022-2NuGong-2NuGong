@@ -4,7 +4,8 @@ import time
 import json
 import crawling as cr
 import json2SQL as db
-latest1, latest2, latest3, latest4 = "세종캠퍼스 산업스포츠학과 조교 모집", "2022학년도 제2학기 국가근로 및 교내봉사 장학생 선발안내", "2022년도 중성자 회절 여름학교 안내", "2022학년도 전공별 졸업생 취업특강 및 직업탐방 세미나 참여신청 안내(서울캠퍼스) (~01.06)"
+#세종캠퍼스 산업스포츠학과 조교 모집
+latest1, latest2, latest3, latest4 = "", "2022학년도 제2학기 국가근로 및 교내봉사 장학생 선발안내", "2022년도 중성자 회절 여름학교 안내", "2022학년도 전공별 졸업생 취업특강 및 직업탐방 세미나 참여신청 안내(서울캠퍼스) (~01.06)"
 list1 = [latest1]
 list2 = [latest2]
 list3 = [latest3]
@@ -29,7 +30,7 @@ def update_Detect(lst):
         notice_update_dict = {}
         notice_update_dict["sample"] = newNotice
         #print(notice_update_dict)
-        #db.json2sql(notice_update_dict) #여기가 문제임.
+        db.json2sql(notice_update_dict) #여기가 문제임.
         print("잘 들어감")
         # except:
         #     print("failure: couldn't dump data to database")
