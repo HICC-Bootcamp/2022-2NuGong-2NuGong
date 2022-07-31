@@ -83,3 +83,4 @@ def json2sql(updateNotice):
         # close the cursor and connection
         cur.close()
         conn.close()
+

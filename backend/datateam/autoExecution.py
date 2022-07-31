@@ -15,6 +15,7 @@ def update_Detect(lst):
         # use load() rather than loads() for JSON files
         record_list = json.loads(json_data.read())
         first_record = record_list["sample"] #list형태
+
     cnt = 0
     for i in first_record:
         if(i["title"] == lst[0]):
@@ -28,7 +29,7 @@ def update_Detect(lst):
         notice_update_dict = {}
         notice_update_dict["sample"] = newNotice
         #print(notice_update_dict)
-        db.json2sql(notice_update_dict) #여기가 문제임.
+        #db.json2sql(notice_update_dict) #여기가 문제임.
         print("잘 들어감")
         # except:
         #     print("failure: couldn't dump data to database")
@@ -37,9 +38,7 @@ def update_Detect(lst):
     #     print("Nothing new")
     #     latest1 = first_record[0]["title"]
     #     # latest1 = newNotice["title"]
-        
-    
-    
+   
 
 job1 = schedule.every(1).seconds.do(cr.chamsae_3, '2', 1, 1)
 job2 = schedule.every(1).seconds.do(update_Detect, list1)
