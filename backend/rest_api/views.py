@@ -89,6 +89,7 @@ class UserInfoAPI(APIView):
         return HttpResponse("successfully done")
 
 class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
+    permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
 
     def get_queryset(self):
