@@ -167,3 +167,10 @@ class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+    def delete(self, request):
+        user = self.request.user
+        id = request.data["notice_id"]
+        user.bookmarks.remove(id)
+        user.save()
+        return HttpResponse("successfully done")
