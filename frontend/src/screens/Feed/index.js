@@ -58,23 +58,9 @@ const FeedScreen = ({ navigation }) => {
   ]);
 
   const GetData = async () => {
-    try {
-      await AsyncStorage.getItem('auth', (err, result) => {
-        axios
-          .get(`${API_URL}/notice/recommend/`, {
-            headers: {
-              Authorization: result,
-            },
-          })
-          .then(res => {
-            setData(res.data);
-          });
-      });
-    } catch {
-      err => {
-        console.log(err);
-      };
-    }
+    axios.get(`${API_URL}/search/?query=장학`).then(res => {
+      setData(res.data);
+    });
   };
 
   const focus = useIsFocused();
