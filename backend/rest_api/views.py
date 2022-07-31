@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Bookmark, Notice
+from .models import Notice
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
 from .serializer import RegisterSerializer
@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import AuthToken
-from .serializer import RegisterSerializer, BookmarkSerializer, NoticeSerializer
+from .serializer import RegisterSerializer, NoticeSerializer
 from rest_framework.views import APIView
 from django.views.generic import ListView, DetailView
 from rest_framework import generics
@@ -151,13 +151,11 @@ class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 class NoticeBookmarkAPI(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = [AllowAny] #(IsAuthenticated,)  edit before release
-    def post(self, request):
-        print(111)
-        serializer = BookmarkSerializer(data=request.data)
-        print(111)
-        serializer.is_valid(raise_exception=True)
-        user=serializer.save()
-        
+    def put(self, request):
+        user = self.request.user
+        id = request.data["notice_id"]
+        user.bookmarks.add(id)
+        user.save()
         return HttpResponse("successfully done")
 
 # class BookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):

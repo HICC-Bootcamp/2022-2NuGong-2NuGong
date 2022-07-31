@@ -1,5 +1,5 @@
 from rest_framework import serializers, validators
-from .models import Bookmark, Notice, User
+from .models import Notice, User
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,14 +35,3 @@ class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
         fields = '__all__' #모든 필드로 지정함
-
-class BookmarkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Bookmark
-        fields = '__all__'
-    
-    def create(self, validated_data):
-        user_id=validated_data['user_id']
-        notice_id=validated_data['notice_id']
-        bookmark = Bookmark.objects.create(user_id=user_id, notice_id=notice_id)
-        return bookmark
