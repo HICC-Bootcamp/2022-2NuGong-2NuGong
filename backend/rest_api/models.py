@@ -36,7 +36,7 @@ class UserManager(BaseUserManager):
 
 class Notice(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
     create_at = models.DateTimeField()
     views = models.PositiveIntegerField()
     tag = models.IntegerField()
