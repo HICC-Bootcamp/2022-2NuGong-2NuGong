@@ -89,8 +89,8 @@ def chamsae_2(which, start, end):
             title = " ".join(title.split())
             if title[0] == ' ':
                 title[0] = ''
-            if whichBoard == "6": #행사및 공모전이면 태그 번호 17
-                tag = "17"
+            if whichBoard == "6": #행사및 공모전이면 태그 번호 14
+                tag = "14"
             else:
                 tag = classification.findNoticeTag(title)
             view_cnt = int(view_cnt)
@@ -98,8 +98,8 @@ def chamsae_2(which, start, end):
             d = {"title" : title, "create_at" : when, "views" : view_cnt, "tag" : tag, "department" : department, "contents" : b[0].text, "urls" : url}
             
             json_lst.append(d)
-            print(url, title, when, view_cnt, b[0].text)
-            print('\n')
+            # print(url, title, when, view_cnt, b[0].text)
+            # print('\n')
         except:
             continue
     return json_lst
