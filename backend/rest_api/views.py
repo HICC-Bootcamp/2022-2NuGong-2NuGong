@@ -158,7 +158,12 @@ class NoticeBookmarkAPI(APIView):
         user.bookmarks.add(id)
         user.save()
         return HttpResponse("successfully done")
-
+    def delete(self, request):
+        user = self.request.user
+        id = request.data["notice_id"]
+        user.bookmarks.remove(id)
+        user.save()
+        return HttpResponse("successfully done")
 # class BookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
 #     permission_classes = [AllowAny]
 #     serializer_class = BookmarkSerializer
