@@ -4,14 +4,13 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Notice
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
 from .serializer import RegisterSerializer
 from rest_framework.views import APIView
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import User
+from .models import User, Notice
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import AuthToken
 from .serializer import RegisterSerializer, NoticeSerializer
@@ -159,15 +158,12 @@ class NoticeBookmarkAPI(APIView):
         user.save()
         return HttpResponse("successfully done")
 
-# class BookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
-#     permission_classes = [AllowAny]
-#     serializer_class = BookmarkSerializer
-#     def get_queryset(self):
-#         user = self.request.user
-#         if user:
-#             bookmarkList = Bookmark.objects.filter(user_id=user)
-            
-#         else:
-#             return 
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
+class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return Notice.objects.filter(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
