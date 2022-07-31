@@ -42,7 +42,7 @@ class Notice(models.Model):
     tag = models.IntegerField()
     department = models.IntegerField()
     contents = models.TextField()
-    url = models.URLField(max_length=200, null=True)
+    url = models.URLField(max_length=500, null=True)
 
     def __str___(self):
         return self.title
