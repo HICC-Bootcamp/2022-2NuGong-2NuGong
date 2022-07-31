@@ -126,11 +126,12 @@ class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
     serializer_class = NoticeSerializer
     def get_queryset(self):
-        query = self.request.GET['query']
-        if query:
+        try:
+            query = self.request.GET['query']
             return Notice.objects.filter(title__contains=query)
-        else:
-            return 
+        except:
+            department = self.request.GET['department']
+            return Notice.objects.filter(department__contains=department)
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
