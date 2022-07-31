@@ -6,7 +6,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
-from .serializer import RegisterSerializer
 from rest_framework.views import APIView
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,7 +14,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import AuthToken
 from .serializer import RegisterSerializer, NoticeSerializer
 from rest_framework.views import APIView
-from django.views.generic import ListView, DetailView
 from rest_framework import generics
 from rest_framework import mixins
 from datateam.recommendation import recommendation #recommendation.py에서 구현할 recommend 함수
@@ -169,9 +167,12 @@ class NoticeBookmarkAPI(APIView):
 class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
     permission_classes = [AllowAny]
+    serializer_class = NoticeSerializer
 
     def get_queryset(self):
-        return Notice.objects.filter(users__id=self.request.user.id)
+        user = self.request.user
+        print(user.id)
+        return Notice.objects.filter(users__id__contains=user.id)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
