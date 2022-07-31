@@ -99,10 +99,7 @@ class NoticeListAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return Notice.objects.all().order_by('id')
         
     def get(self, request, *args, **kwargs):
-        try:
-            return self.list(request, *args, **kwargs)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return self.list(request, *args, **kwargs)
 
 class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
     permission_classes = [AllowAny]
@@ -123,12 +120,10 @@ class NoticeDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
         return 
 
     def get(self, request, *args, **kwargs):      
-        try:
-            notice_id = kwargs['pk']
-            self.viewIncrease(request.user, notice_id)
-            return self.retrieve(request, *args, **kwargs)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        notice_id = kwargs['pk']
+        self.viewIncrease(request.user, notice_id)
+        return self.retrieve(request, *args, **kwargs)
+        
 
 class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [AllowAny]
@@ -142,10 +137,7 @@ class NoticeSearchAPI(generics.GenericAPIView, mixins.ListModelMixin):
             department = self.request.GET['department']
             return Notice.objects.filter(department__contains=department)
     def get(self, request, *args, **kwargs):
-        try:
-            return self.list(request, *args, **kwargs)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return self.list(request, *args, **kwargs)
 
 class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
     authentication_classes = (TokenAuthentication,)
@@ -158,10 +150,8 @@ class NoticeSuggestionListAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return Notice.objects.filter(tag__in=[11])
     
     def get(self, request, *args, **kwargs):
-        try:
-            return self.list(request, *args, **kwargs)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return self.list(request, *args, **kwargs)
+       
 
 class NoticeBookmarkAPI(APIView):
     authentication_classes = (TokenAuthentication,)
@@ -196,7 +186,4 @@ class NoticeBookmarkListAPI(generics.GenericAPIView, mixins.ListModelMixin):
         return Notice.objects.filter(users__id__contains=user.id)
 
     def get(self, request, *args, **kwargs):
-        try:
-            return self.list(request, *args, **kwargs)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return self.list(request, *args, **kwargs)
