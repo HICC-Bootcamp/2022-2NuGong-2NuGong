@@ -85,6 +85,11 @@ def chamsae_2(which, start, end):
             view_cnt = ""
         b = soup.find_all("div","substance")
         try:
+            for br in b[0].find_all(["a", "p", "div", "h3", "br"]):
+                br.replace_with(br.get_text() + "\n")
+        except:
+            pass
+        try:
             title = (re.sub(r'\[[^)]*\]','',title))
             title = " ".join(title.split())
             if title[0] == ' ':
@@ -95,7 +100,7 @@ def chamsae_2(which, start, end):
                 tag = classification.findNoticeTag(title)
             view_cnt = int(view_cnt)
             
-            d = {"title" : title, "create_at" : when, "views" : view_cnt, "tag" : tag, "department" : department, "contents" : b[0].text, "url" : url}
+            d = {"title" : title, "create_at" : when, "views" : view_cnt, "tag" : tag, "department" : department, "contents" : b[0].get_text(), "url" : url}
             
             json_lst.append(d)
             # print(url, title, when, view_cnt, b[0].text)
