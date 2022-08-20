@@ -48,12 +48,12 @@
 
 ## 이제 누가 공지해주냐
 <br>
-
+            
 <img src="https://user-images.githubusercontent.com/67856696/185729921-955c912e-d608-4028-996e-6cdccfd42c9f.png" height="700"/>
+메인
 
 
-
-
+            
 
 
 ## Getting Started
