@@ -53,14 +53,20 @@
 메인
             
 <img src="https://user-images.githubusercontent.com/67856696/185730049-a6682da1-5acf-4f8f-bd32-e601d2d59fac.png" height="700" />
-<img src="(https://user-images.githubusercontent.com/67856696/185730052-ea13aa86-0c1c-4c4c-afe4-3059c9301581.png)" height="700" />
+<img src="https://user-images.githubusercontent.com/67856696/185730052-ea13aa86-0c1c-4c4c-afe4-3059c9301581.png" height="700" />
+검색
 
+<img src="https://user-images.githubusercontent.com/67856696/185730137-2a663c51-30e9-4ce1-a626-a7dd72ae6491.png" height="700" />
+공지 더보기
 
-
+<img src="https://user-images.githubusercontent.com/67856696/185730161-0ebfbdc7-101d-4721-aa8a-bf3c12de2e67.png" height="700" />
+공지
             
-
+<img src="https://user-images.githubusercontent.com/67856696/185730188-8e26e0b0-07e6-48aa-baf0-e569394904cc.png" height="700" />
+마이페이지
 
 ## Getting Started
+
 Step1) "python -m venv venv"
 <br>
 Step2) 
