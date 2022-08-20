@@ -51,6 +51,10 @@
             
 <img src="https://user-images.githubusercontent.com/67856696/185729921-955c912e-d608-4028-996e-6cdccfd42c9f.png" height="700"/>
 메인
+            
+<img src="https://user-images.githubusercontent.com/67856696/185730049-a6682da1-5acf-4f8f-bd32-e601d2d59fac.png" height="700" />
+<img src="(https://user-images.githubusercontent.com/67856696/185730052-ea13aa86-0c1c-4c4c-afe4-3059c9301581.png)" height="700" />
+
 
 
             
