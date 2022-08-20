@@ -46,6 +46,15 @@
     </tr>
 </table>
 
+## 이제 누가 공지해주냐
+<br>
+### 메인
+![Simulator Screen Shot - iPhone 13 - 2022-08-20 at 13 59 33](https://user-images.githubusercontent.com/67856696/185729921-955c912e-d608-4028-996e-6cdccfd42c9f.png)
+
+
+
+
+
 ## Getting Started
 Step1) "python -m venv venv"
 <br>
