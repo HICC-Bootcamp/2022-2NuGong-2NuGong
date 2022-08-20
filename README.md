@@ -49,7 +49,8 @@
 ## 이제 누가 공지해주냐
 <br>
 
-![main](https://user-images.githubusercontent.com/67856696/185729921-955c912e-d608-4028-996e-6cdccfd42c9f.png){: height="100px"}
+![main](https://user-images.githubusercontent.com/67856696/185729921-955c912e-d608-4028-996e-6cdccfd42c9f.png){: height="100"}
+<img src="https://user-images.githubusercontent.com/67856696/185729921-955c912e-d608-4028-996e-6cdccfd42c9f.png" height="400"/>
 
 
 
